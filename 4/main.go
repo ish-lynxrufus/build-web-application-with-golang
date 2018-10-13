@@ -28,6 +28,14 @@ func login(w http.ResponseWriter, r *http.Request) {
 		t.Execute(w, nil)
 	} else {
 		r.ParseForm()
+
+		// 入力内容に不備がある場合
+		if len(r.Form["username"][0]) == 0 || len(r.Form["password"][0]) == 0 {
+			fmt.Println("username or password is null")
+			t, _ := template.ParseFiles("login.gtpl")
+			t.Execute(w, nil)
+		}
+
 		fmt.Println("username:", r.Form["username"])
 		fmt.Println("password:", r.Form["password"])
 	}
