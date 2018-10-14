@@ -77,7 +77,16 @@ func main() {
 	template.Must(template.New("second").Parse("some static text {{ .Name }}"))
 	fmt.Println("The second one parsed OK.")
 
-	fmt.Println("The next one ought to fail.")
-	tErr := template.New("check parse error with Must")
-	template.Must(tErr.Parse(" some static text {{ .Name }"))
+	// fmt.Println("The next one ought to fail.")
+	// tErr := template.New("check parse error with Must")
+	// template.Must(tErr.Parse(" some static text {{ .Name }"))
+
+	s1, _ := template.ParseFiles("header.tmpl", "content.tmpl", "footer.tmpl")
+	// s1.ExecuteTemplate(os.Stdout, "header", nil)
+	// fmt.Println()
+	s1.ExecuteTemplate(os.Stdout, "content", nil)
+	fmt.Println()
+	// s1.ExecuteTemplate(os.Stdout, "footer", nil)
+	// fmt.Println()
+	// s1.Execute(os.Stdout, nil)
 }
