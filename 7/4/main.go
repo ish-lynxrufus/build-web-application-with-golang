@@ -69,4 +69,15 @@ func main() {
 	tIfElse := template.New("template test")
 	tIfElse = template.Must(tIfElse.Parse("if-else: {{if `anything`}}出力される{{else}}出力されない{{end}}\n"))
 	tIfElse.Execute(os.Stdout, nil)
+
+	tOK := template.New("first")
+	template.Must(tOK.Parse(" some static text /* and a comment */"))
+	fmt.Println("The first one parsed OK.")
+
+	template.Must(template.New("second").Parse("some static text {{ .Name }}"))
+	fmt.Println("The second one parsed OK.")
+
+	fmt.Println("The next one ought to fail.")
+	tErr := template.New("check parse error with Must")
+	template.Must(tErr.Parse(" some static text {{ .Name }"))
 }
