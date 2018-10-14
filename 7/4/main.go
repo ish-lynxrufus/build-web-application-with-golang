@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"os"
 )
@@ -36,4 +37,18 @@ func main() {
 		Friends:  []*Friend{&f1, &f2},
 	}
 	t.Execute(os.Stdout, p)
+
+	fmt.Println("\n=== 条件分岐 ===")
+
+	tEmpty := template.New("template test")
+	tEmpty = template.Must(tEmpty.Parse("空のpipeline: {{if ``}}出力されない{{end}}\n"))
+	tEmpty.Execute(os.Stdout, nil)
+
+	tWithValue := template.New("template test")
+	tWithValue = template.Must(tWithValue.Parse("空でないpipeline: {{if `anything`}}出力される{{end}}\n"))
+	tWithValue.Execute(os.Stdout, nil)
+
+	tIfElse := template.New("template test")
+	tIfElse = template.Must(tIfElse.Parse("if-else: {{if `anything`}}出力される{{else}}出力されない{{end}}\n"))
+	tIfElse.Execute(os.Stdout, nil)
 }
