@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"html/template"
 	"os"
+	"strings"
 )
 
 type Friend struct {
@@ -16,14 +17,31 @@ type Person struct {
 	Friends  []*Friend
 }
 
+func EmailDealWith(args ...interface{}) string {
+	ok := false
+	var s string
+	if len(args) == 1 {
+		s, ok = args[0].(string)
+	}
+	if !ok {
+		s = fmt.Sprint(args...)
+	}
+	substrs := strings.Split(s, "@")
+	if len(substrs) != 2 {
+		return s
+	}
+	return (substrs[0] + " at " + substrs[1])
+}
+
 func main() {
 	f1 := Friend{Fname: "minux.ma"}
 	f2 := Friend{Fname: "xushiwei"}
 	t := template.New("fieldname exapmle")
+	t = t.Funcs(template.FuncMap{"emailDeal": EmailDealWith})
 	t, _ = t.Parse(`
     hello {{.UserName}}!
     {{range .Emails}}
-      an email {{.}}
+      an email {{.|emailDeal}}
     {{end}}
     {{with .Friends}}
     {{range .}}
